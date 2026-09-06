@@ -1,0 +1,277 @@
+# ============================================================
+
+# Python
+
+# ============================================================
+
+**pycache**/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+
+.venv/
+venv/
+env/
+ENV/
+
+# Python packaging
+
+build/
+dist/
+*.egg-info/
+
+# Testing / coverage
+
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ============================================================
+
+# Environment Variables / Secrets
+
+# ============================================================
+
+.env
+.env.*
+!.env.example
+
+# Credentials
+
+*.pem
+*.key
+*.crt
+credentials/
+secrets/
+
+# ============================================================
+
+# Jupyter / Kaggle
+
+# ============================================================
+
+.ipynb_checkpoints/
+kaggle.json
+
+# ============================================================
+
+# PyTorch / Deep Learning Model Files
+
+# ============================================================
+
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+
+# Other model formats
+
+*.onnx
+*.h5
+*.hdf5
+*.keras
+
+# Model output directories
+
+checkpoints/
+weights/
+saved_models/
+model_weights/
+
+# ============================================================
+
+# Brain MRI / Medical Imaging Data
+
+# ============================================================
+
+# Raw datasets
+
+data/raw/
+data/dataset/
+data/datasets/
+
+# Processed datasets
+
+data/processed/
+data/preprocessed/
+
+# Medical imaging files
+
+*.nii
+*.nii.gz
+*.dcm
+*.mha
+*.mhd
+*.nrrd
+
+# Large numerical data
+
+*.npy
+*.npz
+*.pkl
+*.pickle
+
+# Dataset files
+
+data/*.csv
+data/*.json
+data/*.jsonl
+data/*.parquet
+data/*.feather
+
+# Archives
+
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# ============================================================
+
+# Training / Experiment Outputs
+
+# ============================================================
+
+runs/
+wandb/
+mlruns/
+tensorboard/
+lightning_logs/
+
+# TensorBoard event files
+
+events.out.tfevents.*
+
+# ============================================================
+
+# Evaluation Outputs
+
+# ============================================================
+
+evaluation/results/
+evaluation/output/
+evaluation/outputs/
+
+results/
+predictions/
+predicted_masks/
+
+# ============================================================
+
+# Generated Visualizations
+
+# ============================================================
+
+visualization/output/
+visualization/outputs/
+visualization/generated/
+
+# Generated image files
+
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tif
+*.tiff
+
+# ============================================================
+
+# Hugging Face / Model Caches
+
+# ============================================================
+
+.cache/
+huggingface_cache/
+transformers_cache/
+.huggingface/
+
+# ============================================================
+
+# FAISS / Vector Database
+
+# ============================================================
+
+*.faiss
+*.index
+
+faiss_index/
+vectorstore/
+vectorstores/
+chroma/
+chroma_db/
+
+# ============================================================
+
+# Logs
+
+# ============================================================
+
+*.log
+logs/
+
+# ============================================================
+
+# Temporary Files
+
+# ============================================================
+
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+*.bak
+*.backup
+*.orig
+*.rej
+
+# ============================================================
+
+# IDE / Editors
+
+# ============================================================
+
+.vscode/
+.idea/
+*.iml
+.history/
+
+# ============================================================
+
+# Operating System
+
+# ============================================================
+
+# Windows
+
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+
+.directory
+
+# ============================================================
+
+# Docker
+
+# ============================================================
+
+docker-compose.override.yml

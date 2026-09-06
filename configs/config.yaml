@@ -1,0 +1,62 @@
+stage: 2   # 1 = image-only pretraining, 2 = text-guided fine-tuning
+
+paths:
+  brats2020:    '/kaggle/input/datasets/awsaf49/brats20-dataset-training-validation/BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData'
+  brats2023_p1: '/kaggle/input/datasets/aiocta/brats2023-part-1'
+  brats2023_p2: '/kaggle/input/datasets/aiocta/brats2023-part-2zip'
+  output_dir:   '/kaggle/working/outputs'
+  case_reports: '/kaggle/input/datasets/vibinshadow/bge-m3-attention-unet-brats-report/outputs/case_reports.json'
+  checkpoint_load: '/kaggle/input/datasets/fahmidaatia/bilraunet-data/outputs/last_model.pth'
+  history_load:    '/kaggle/input/datasets/fahmidaatia/bilraunet-data/outputs/history.json'
+
+model:
+  in_channels:   4
+  base_ch:       32     # was 48 — reduced to keep params < 50M
+  max_ch:        256
+  num_classes:   4      # 0=BG 1=NCR 2=Edema 3=ET
+  text_in_dim:   1024   # multilingual-e5-large output dim
+  text_proj_dim: 256    # projected text embedding dim
+
+text_encoder:
+  name: 'intfloat/multilingual-e5-large'
+  max_length: 64
+  # Stage 2: unfreeze last 4 transformer layers + pooler
+  unfreeze_layers: [20, 21, 22, 23]
+
+training:
+  patch_size:    [128, 128, 128]
+  batch_size:    2
+  grad_accum:    4      # effective batch = 2 × 4 = 8
+  num_epochs:    100
+  warmup_epochs: 5
+  learning_rate: 0.0003    # written as decimal — YAML scientific notation breaks PyTorch
+  weight_decay:  0.0001
+  use_amp:       true
+  log_every:     20
+  seed:          42
+
+loss:
+  # ImprovedLoss = 0.4*Dice + 0.3*CE + 0.3*TverskyFocal
+  # Class weights for CrossEntropyLoss:
+  class_weights: [0.25, 2.5, 1.5, 3.0]   # BG, NCR, Edema, ET
+  # TverskyFocalLoss params (emphasises false negatives for small ET):
+  tversky_alpha: 0.3    # FP weight
+  tversky_beta:  0.7    # FN weight (higher → penalises misses more)
+  tversky_gamma: 2.0    # focal modulation
+  smooth:        1.0e-6
+  # Auxiliary head weights (deep supervision):
+  aux5_weight:   0.2
+  aux4_weight:   0.2
+  aux3_weight:   0.1
+
+data:
+  train_val_test_split: [0.80, 0.10, 0.10]
+  stratify_by: 'source'    # ensures brats2020/2023 ratio preserved in every split
+  text_source_train: 'report'   # richer per-patient case reports for training
+  text_source_val:   'report'   # val uses case reports too
+  text_source_test:  'report'   # test uses case reports
+
+evaluation:
+  use_tta:      true
+  tta_folds:    8           # all axis-flip combinations
+  compute_hd95: true
